@@ -1,7 +1,6 @@
+library(tidyverse)
 library(readxl)
-library(tidyr)
 library(writexl)
-library(ggplot2)
 
 load("dados.RData")
 
@@ -36,7 +35,7 @@ t<-t %>% mutate(Duracao=Ano_julgado-Ano_processo)
 t<-t %>% mutate(Duracao=as.integer(Duracao))
 t$Data2<-lubridate::dmy(t$Data1)
 
-# write_xlsx(tcu_total_2011,"tcu_total_2011.xlsx")
+write_xlsx(tcu_total_2011,"xlsx/tcu_total_2011.xlsx")
 
 t3<-t1
 t3$Tipo<-NULL
@@ -103,14 +102,14 @@ Relator1<-Relator1 %>% mutate(porcentagem=Freq*100/51183)
 
 glimpse(Relator1)
 
-write_xlsx(Relator1,"Relator1.xlsx")
+write_xlsx(Relator1,"xlsx/Relator1.xlsx")
 
 table(t$`Tipo de processo`)
 Tipo_de_processo1<-as.data.frame(table(t$`Tipo de processo`))
 Tipo_de_processo1<-Tipo_de_processo1 %>% mutate(proporcao=Freq/51183)
 Tipo_de_processo1<-Tipo_de_processo1 %>% mutate(porcentagem=Freq*100/51183)
 
-write_xlsx(Tipo_de_processo1,"Tipo_de_processo1.xlsx")
+write_xlsx(Tipo_de_processo1,"xlsx/Tipo_de_processo1.xlsx")
 
 table(t$multa)
 
@@ -118,17 +117,17 @@ table(t$Ano_processo)
 Ano_processo1<-as.data.frame(table(t$Ano_processo))
 Ano_processo1<-Ano_processo1 %>% mutate(proporcao=Freq/51183)
 Ano_processo1<-Ano_processo1 %>% mutate(porcentagem=Freq*100/51183)
-write_xlsx(Ano_processo1,"Ano_processo1.xlsx")
+write_xlsx(Ano_processo1,"xlsx/Ano_processo1.xlsx")
 
 table(t$Ano_julgado)
 Ano_julgado1<-as.data.frame(table(t$Ano_julgado))
 Ano_julgado1<-Ano_julgado1 %>% mutate(proporcao=Freq/51183)
 Ano_julgado1<-Ano_julgado1 %>% mutate(porcentagem=Freq*100/51183)
-write_xlsx(Ano_julgado1,"Ano_julgado1.xlsx")
+write_xlsx(Ano_julgado1,"xlsx/Ano_julgado1.xlsx")
 
 table(t$Duracao)
 Duracao<-as.data.frame(table(t$Duracao))
-write_xlsx(Duracao,"Duracao.xlsx")
+write_xlsx(Duracao,"xlsx/Duracao.xlsx")
 
 t1<-subset(t,Ano_processo>0)
 t2<-t
@@ -363,7 +362,7 @@ rt1000p$proporcao<-NULL
 rt1000p$porcentagem<-NULL
 rt1000p$relator<-Relator1$Var1
 
-write_xlsx(rt1000p,"rt1000p.xlsx")
+write_xlsx(rt1000p,"xlsx/rt1000p.xlsx")
 
 glimpse(rt1000)
 
@@ -418,15 +417,15 @@ rmt<-spread(relator_multa,key=Var2,value=Freq)
 
 rmt$soma<-rmt$"FALSE"+rmt$"TRUE"
 rmtp<-rmt[,-c(1)]*100/rmt$soma
-write_xlsx(rmtp,"rmtp.xlsx")
+write_xlsx(rmtp,"xlsx/rmtp.xlsx")
 
 tm300t$soma<-tm300t$"FALSE"+tm300t$"TRUE"
 tm300tp<-tm300t[,-c(1)]*100/tm300t$soma
-write_xlsx(tm300tp,"tm300tp.xlsx")
+write_xlsx(tm300tp,"xlsx/tm300tp.xlsx")
 
-write_xlsx(rt,"rt.xlsx")
+write_xlsx(rt,"xlsx/rt.xlsx")
 
-write_xlsx(tm300t,"tm300t.xlsx")
+write_xlsx(tm300t,"xlsx/tm300t.xlsx")
 
 table(t$multa)
 
@@ -718,14 +717,14 @@ summary(lm.fit)$sigma
 
 coeftp<-as.data.frame(coef(lm.fit))
 
-write_xlsx(coeftp,"coeftp.xlsx")
+write_xlsx(coeftp,"xlsx/coeftp.xlsx")
 
 glimpse((coeftp))
 
 mean(t$Duracaoa)
 
 coefrel<-as.data.frame(coef(lm.fit))
-write_xlsx(coefrel,"coefrel.xlsx")
+write_xlsx(coefrel,"xlsx/coefrel.xlsx")
 
 lm.fit=lm(t$Duracaoa~t$Ano_processo+t$Ano_julgado+t$multa+
             t$Relator+t$`Tipo de processo`,
@@ -781,7 +780,7 @@ glm.fit=glm(ty$multa1~ty$Duracaoa+
             data=ty ,family =binomial)
 
 coefrlogmtdr<-as.data.frame(coef(glm.fit))
-write_xlsx(coefrlogmtdr,"coefrlogmtdr.xlsx")
+write_xlsx(coefrlogmtdr,"xlsx/coefrlogmtdr.xlsx")
 
 glm.fit=glm(t$multa1~t$Ano_processo+t$Ano_julgado+t$Duracaoa+
               t$Relator+t$Tipo_de_processo,
